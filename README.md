@@ -2,7 +2,14 @@
 
 This repo classifies mineral types based on the textures in sample core images.
 
-Usage: `python main.py`
+### Data prep
+-RGB image path: `/img-rgb-50u`
+-Class map label path: `/img-clm-phy`
+
+All images are currently resized to 2048x128 by default.
+
+### Usage
+`python main.py`
 
 TODO:
 1. Implement parser for inputs
