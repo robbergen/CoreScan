@@ -3,8 +3,8 @@
 This repo classifies mineral types based on the textures in sample core images.
 
 ### Data prep
--RGB image path: `/img-rgb-50u`
--Class map label path: `/img-clm-phy`
+- RGB image path: `/img-rgb-50u`
+- Class map label path: `/img-clm-phy`
 
 All images are currently resized to 2048x128 by default.
 
