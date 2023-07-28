@@ -51,15 +51,26 @@ def create_mask(img,mineral,class_dict):
         for j in range(img.shape[2]):
             if tuple(img[:,i,j]) == class_dict[mineral]:
                 mask[i,j] = 1
-    return mask   
+    return mask
+
+def mask_RGB(RGB,img,class_dict):
+    #Input images should be channels x height x width
+    #Set all NA pixels in the class map to 0 in the RGB
+
+    for i in range(img.shape[1]):
+        for j in range(img.shape[2]):
+            if tuple(img[:,i,j]) == class_dict["NA"]:
+                RGB[:,i,j] = 0
+    return RGB
 
 class CustomImageDataset(Dataset):
-    class CustomImageDataset(Dataset):
     def __init__(self, img_dir, label_dir, mineral_type, class_dict, transform=None, target_transform=None):
         self.img_dir = img_dir
         self.label_dir = label_dir
+        # self.cm_dir = cm_dir
         self.img_list = sorted([f for f in os.listdir(self.img_dir) if os.path.isfile(os.path.join(img_dir,f))])
         self.label_list = sorted([f for f in os.listdir(self.label_dir) if os.path.isfile(os.path.join(label_dir,f))])
+        # self.cm_list = sorted([f for f in os.listdir(self.cm_dir) if os.path.isfile(os.path.join(cm_dir,f))])
         self.transform = transform
         self.target_transform = target_transform
         self.mineral_type = mineral_type
@@ -71,6 +82,7 @@ class CustomImageDataset(Dataset):
     def __getitem__(self, idx):
         img_path = os.path.join(self.img_dir, self.img_list[idx])
         label_path = os.path.join(self.label_dir, self.label_list[idx])
+        # cm_path = os.path.join(self.cm_dir, self.cm_list[idx])
             
         #Get header info
         j2k = glymur.Jp2k(img_path)
@@ -113,6 +125,7 @@ class CustomImageDataset(Dataset):
         #Normalize images
         mean, std = np.mean(np.mean(img,axis=-1),axis=-1), np.std(np.std(img,axis=-1),axis=-1)
         mask = create_mask(label,self.mineral_type,self.class_dict)
+        img = mask_RGB(img,label,self.class_dict)
 
         img = torch.Tensor(img)
         mask = torch.Tensor(mask)

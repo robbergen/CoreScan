@@ -4,6 +4,7 @@ from train import train
 
 path = '../img-rgb-50u'
 label_path = '../img-clm-phy'
+# cm_path = '../img-clm-phy'
 
 class_min_dict = {"amphibole":(52,82,52),
               "apophyllite":(0,255,0),
